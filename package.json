@@ -1,0 +1,15 @@
+{
+  "name": "Trabalho_Final",
+  "version": "1.0.0",
+  "description": "### How to install   Make sure you have instaled npm (or yarn) and git on your machine. *   clone this repo: `git clone https://github.com/heboli/bot-do-bem.git` *   enter the project folder: `cd bot-do-bem` *",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
