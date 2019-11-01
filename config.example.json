@@ -1,4 +1,11 @@
 {
 	"prefix": "!",
-	"token": "abcdef"
+	"token": "abcdef",
+	"ibm_cloud_api": {
+		"tone_analyzer": {
+			"api_key":"abcdef",
+			"url": "https://gateway.watsonplatform.net/tone-analyzer/api",
+			"version": "2017-09-21"
+		}
+	}
 }
