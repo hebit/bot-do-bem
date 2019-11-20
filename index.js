@@ -33,6 +33,7 @@ client.on('message', async message => {
          * caso a analise tenha algum erro => catch
          * 
          */
+
         toneAnalyzer.analyze(content)
             .then(({ result, result_tags }) =>{
                 console.log('result:', result)
@@ -43,7 +44,11 @@ client.on('message', async message => {
                     message.delete()
                         .then(() => console.log(`[deleted message] of: ${author.username}`))
                         .catch(console.error)
+                    
 
+                    // bani a pessoa que mandou a mensagem
+                    const { guild } = message
+                    guild.ban(author)
                     /**
                      * Manda uma mensagem de alerta (com debug detalhando a mensagem anteriormente enviada)
                      */
