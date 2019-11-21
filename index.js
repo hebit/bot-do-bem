@@ -2,8 +2,9 @@ const Discord = require("discord.js")
 const { TextChannel } = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
-const axios = require("axios")
-const toneAnalyzer = require("./api")
+// const axios = require("axios")
+const toneAnalyzer = require("./tone")
+const languageTranslator = require("./translator")
 
 client.on('ready', () => {
     console.log('hello world!')
@@ -23,49 +24,26 @@ client.on('message', async message => {
     if(author != client.user){
 
         /**
-         * Chama o analisador de tons e caso a 
+         * Chama o analisador de tons e caso a
          * analise ocorra normalmente ele
          * verifica sinais suspeitos e caso
-         * necessário apaga a mensagem e 
+         * necessário apaga a mensagem e
          * envia um alerta.
-         * 
+         *
          * caso a analise ocorra normalmente => .then
          * caso a analise tenha algum erro => catch
-         * 
+         *
          */
-
-        toneAnalyzer.analyze(content)
-            .then(({ result, result_tags }) =>{
-                console.log('result:', result)
-                if(result.length >= 1){
-                    /**
-                     * Deleta a mensagem se algum resultado suspeito for encontrado
-                     */
-                    message.delete()
-                        .then(() => console.log(`[deleted message] of: ${author.username}`))
-                        .catch(console.error)
-                    
-
-                    // bani a pessoa que mandou a mensagem
-                    const { guild } = message
-                    guild.ban(author)
-                    /**
-                     * Manda uma mensagem de alerta (com debug detalhando a mensagem anteriormente enviada)
-                     */
-                    message.channel.send(`${author.username} você não deve ser maldoso :/\n`+
-                        `debug purpose: \`\`\`\n`+
-                        `${JSON.stringify({
-                            text: content,
-                            tags: result_tags,
-                            details: result
-                          }, null, 2)}`+
-                        `\n\`\`\``
-                    )
-                        .then(() => console.log(`[sent message] : ${content}`))
-                        .catch(console.error)
-                }
+        const translatedContent = await languageTranslator.translateText(content)
+        toneAnalyzer.analyze(translatedContent)
+            .then(({ result, result_tags }) => {
+                /**
+                 * if -> switch pra multiple actions
+                 */
+                handleActions(message, { author, content, result, result_tags })
             })
             .catch(console.error)
+
     }
 })
 

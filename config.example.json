@@ -6,6 +6,11 @@
 			"api_key":"abcdef",
 			"url": "https://gateway.watsonplatform.net/tone-analyzer/api",
 			"version": "2017-09-21"
+		},
+		"translator" : {
+			"api_key":"abcdef",
+			"url": "https://gateway.watsonplatform.net/language-translator/api",
+			"version": "2018-05-01"
 		}
 	}
 }
