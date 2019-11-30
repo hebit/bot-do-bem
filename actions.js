@@ -14,16 +14,6 @@ debug = (message, { author, content, result, result_tags }) => {
     /**
      * Manda uma mensagem de alerta (com debug detalhando a mensagem anteriormente enviada)
      */
-    //console.log(author)
-    const roleId = message.guild.roles.find("name", "Muted")
-    const { messageMember } = author.lastMessage.member;
-    messageMember.addRole(roleId)
-        .then(() => console.log(`Muted ${messageMember.displayName}`))
-        .catch(console.error);
-    setTimeOut( ()=> {
-        messageMember.removeRole(roleId)
-    },6 * 1000 )
-
     message.channel.send(`${author.username} você não deve ser maldoso :/\n`+
         `debug purpose: \`\`\`\n`+
         `${JSON.stringify({
@@ -35,11 +25,34 @@ debug = (message, { author, content, result, result_tags }) => {
     )   .then(() => console.log(`[sent message] : ${content}`))
         .catch(console.error)
 }
+
+muteMemberAction = (message, author) => {
+    //console.log(author)
+    const messageMember = author.lastMessage.member
+    const mutedRole = message.guild.roles.find("name", "Muted")
+
+    if(messageMember.roles.find("name", "Muted") != null){
+        messageMember.kick()
+    }else{
+        messageMember.addRole(mutedRole)
+        .then(() => console.log(`Mute ${messageMember.displayName}`))
+        .catch(console.error)
+    }
+
+    setTimeout( ()=> {
+        // messageMember.addRole(everyoneRole)
+        // .then(() => console.log(`Unmute ${messageMember.displayName}`))
+        // .catch(console.error)
+        messageMember.removeRole(mutedRole)
+    },60 * 1000 )
+}
+
 handleActions = (message, response) => {
     console.log('[action]: ')
     if(response.result.length > 0) {
         console.log('delete and warning!')
         dangerMessageAction(message, response)
+        muteMemberAction(message, response.author)
     }
     else {
         console.log('nothing.')
